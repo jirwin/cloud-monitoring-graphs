@@ -3,4 +3,7 @@
   "port": "3000",
   "monitoring_user": "",
   "monitoring_key": ""
+  "monitoring_tenant": "",
+  "api_url": "https://monitoring.api.rackspacecloud.com/v1.0",
+  "auth_url": "https://identity.api.rackspacecloud.com/v2.0/tokens"
 }
