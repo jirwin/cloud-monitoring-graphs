@@ -1,0 +1,16 @@
+{
+  "name": "cloud-monitoring-graphs",
+  "description": "cloud-monitoring-graphs",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": "3.x",
+    "underscore": "1.x",
+    "async": "*",
+    "request": "*",
+    "sprintf": "*"
+  },
+  "scripts": {
+    "start": "node bin/cloud-monitoring-graphs.js"
+  }
+}
