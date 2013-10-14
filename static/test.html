@@ -1,0 +1,39 @@
+<html>
+  <head>
+    <title>Example Graph</title>
+    <meta charset="utf-8"></meta>
+  </head>
+  <body>
+    <div id="average-deploy-graph"></div>
+    <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="/js/glimpse.min.js"></script>
+    <script type="text/javascript">
+      $(function() {
+        $.get('/graph/enzgg8zESh/chQPEZpHzY/average_deploys', function(data) {
+          var averageDeploys = [
+            {
+              id: 'average-deploys',
+              dimensions: {
+                x: 'date',
+                y: 'value'
+              },
+              data: data
+            }
+          ];
+          var averageDeployGraph = glimpse.graph()
+            .component({
+              type:'axis',
+              axisType: 'y',
+              scale: d3.scale.linear(),
+              ticks: 4,
+              unit: 'deploys',
+              position: 'center-left',
+              target: '.gl-footer',
+            })
+            .data(myStockDataSources)
+            .render('#average-deploy-graph');
+          });
+      });
+    </script>
+  </body>
+</html>

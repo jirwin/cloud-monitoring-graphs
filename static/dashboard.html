@@ -1,0 +1,66 @@
+<html>
+  <head>
+    <title>Example Graph</title>
+    <meta charset="utf-8"></meta>
+  </head>
+  <body>
+    <div id="deploy-graph"></div>
+    <div id="users-graph"></div>
+    <div id="speed-graph"></div>
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/async/0.2.7/async.min.js"></script>
+    <script type="text/javascript" src="/js/glimpse.min.js"></script>
+    <script type="text/javascript" src="/graphConfigs.js"></script>
+    <script type="text/javascript">
+      $(function() {
+        var graphs = {};
+
+        async.eachSeries(Object.keys(graphConfigs), function(graphKey, callback) {
+          var graph = graphConfigs[graphKey],
+              dataCollection, graphObj;
+
+          $.get('/graph/' + graph.entity + '/' + graph.check + '/' + graph.metric, function(data) {
+            var dataSource = [
+              {
+                id: graph.metric,
+                title: graph.title,
+                color: graph.color,
+                dimensions: {
+                  x: 'date',
+                  y: 'value'
+                },
+                data: data
+              }
+            ]
+
+            graphs[graph.graphKey] = graphs[graph.graphKey] || { graph: glimpse.graphBuilder.create(graph.type) };
+
+            graphObj = graphs[graph.graphKey];
+
+            dataCollection = graphObj.graph.data();
+            dataCollection.add(dataSource);
+
+            graphObj.graph.config({
+                'yAxisUnit': ' ' + graph.unit,
+              })
+              .component({
+                type: 'line',
+                color: graph.color,
+                dataId: graph.metric
+              })
+
+            if (!graphObj.rendered) {
+              graphObj.rendered = true;
+              graphObj.graph.render(graph.element);
+            } else {
+              graphObj.graph.update();
+            }
+
+            callback();
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
