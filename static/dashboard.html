@@ -4,10 +4,6 @@
     <meta charset="utf-8"></meta>
   </head>
   <body>
-    <div id="deploy-graph"></div>
-    <div id="users-graph"></div>
-    <div id="speed-graph"></div>
-
     <script type="text/javascript" src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/async/0.2.7/async.min.js"></script>
     <script type="text/javascript" src="/js/glimpse.min.js"></script>
@@ -19,6 +15,10 @@
         async.eachSeries(Object.keys(graphConfigs), function(graphKey, callback) {
           var graph = graphConfigs[graphKey],
               dataCollection, graphObj;
+
+          if ($(graph.element).length === 0) {
+            $('body').append('<div id="' + graph.element.substr(1) + '"></div>');
+          }
 
           $.get('/graph/' + graph.entity + '/' + graph.check + '/' + graph.metric, function(data) {
             var dataSource = [
